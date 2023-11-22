@@ -1,0 +1,72 @@
+
+<html>
+<?php
+<head>
+<title>notes </title>
+</head>
+<body>
+<p>
+INTALLING PHP and Apache <br>
+CHECK SYSTEM FIRST<br>
+dnf update -y<br>
+APACHE INSTALL<br>
+dnf install httpd -y<br>
+APACHE VERSION<br>
+httpd -v<br>
+START APACHE<br>
+systemctl start httpd<br>
+systemctl enable httpd<br>
+PHP INSTALATION<br>
+The following I had to research to ensure that PHP was working propeerly<br>
+dnf install php php-fpm php-mysqlnd php-opcache php-gd php-xml php-mbstring php-curl php-pecl-imagick php-pecl-zip libzip -y<br>
+After finding out that the download and PHP worked properly I enabled it.<br>
+systemctl start php-fpm<br>
+systemctl enable php-fpm<br>
+</p>
+<p>
+Installing and Configuring MariaDB<br>
+This installs the mariadb<br>
+dnf install mariadb-server -y<br>
+Start MariaDB<br>
+systemctl start mariadb<br>
+systemctl enable mariadb<br>
+Login to MariaDB to configure it<br>
+sudo su<br>
+mysql -u root<br>
+show databases;<br>
+create user 'webappuser'@'localhost' identified by 'what I decided for it to be';<br>
+create database linuxdb;<br>
+grant all privileges on linuxdb.* to 'webappuser'@'localhost';<br>
+show databases;<br>
+use linuxdb;<br>
+create table distributions<br>
+    -> (<br>
+    -> id int unsigned not null auto_increment,<br>
+    -> name varchar(150) not null,<br>
+    -> developer varchar(150) not null,<br>
+    -> founded date not null,<br>
+    -> primary key (id)<br>
+    -> );<br>
+\q<br>
+</p>
+<p>
+Installing Wordpress<br>
+cd /var/www/html/<br>
+sudo dnf wget -y<br>
+wget https://www.wordpress.org/latest.tar.gz 
+<br>tar -xvf latest.tar.gz <br>
+cd wordpress <br>
+cp wp-config-sample.php wp-config.php<br>
+nano wp-config.php<br>
+Then I changed the following<br>
+DB_NAME to linuxdb<br>
+DN_USER to webappuser<br>
+DB_Password to what I decided for it to be<br>
+<br>
+chown -R apache:apache /var/www/html/wordpress<br>
+chmod -R 755 /var/www/html/wordpress<br>
+systemctl restart httpd <br>
+</p>
+</body>
+?>
+</html>
